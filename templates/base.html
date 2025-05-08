@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    <style>
+        nav{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+        }
+        nav ul{
+            display: flex;
+            flex-direction: row;
+            list-style: none;
+            padding: 3px;
+        }
+        .catmain{
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+        .catsub{
+            border: 3px solid black;
+            text-align: center;
+            padding: 5px;
+        }
+        .tdmain{
+            border: 3px solid black;
+            padding: 10px;
+            /* display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center; */
+        }
+        .new{
+            border: 2px solid black;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'nav.html' %}
+    
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} Categories {% endblock title %}
+
+{% block content %}
+
+<h1>Categories:</h1>
+
+<div class="catmain">
+    {% for cat in category %}
+        {% if cat.cname != 'Accessories' %}
+            <div class="catsub">
+                <a href="{% url 'products' cat.cname %}">
+                    <img src="{{ cat.cimage.url }}" alt="" width="200px" height="220px">
+                    <h3>{{ cat.cname }}</h3>
+                </a>
+            </div>
+        {% else %}
+            <div class="catsub">
+                <a href="{% url 'acc-category' %}">
+                    <img src="{{ cat.cimage.url }}" alt="" width="200px" height="220px">
+                    <h3>{{ cat.cname }}</h3>
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock content %}

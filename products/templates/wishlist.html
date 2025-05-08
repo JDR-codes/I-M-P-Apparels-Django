@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+{% if products %}
+    {% for item in products %}
+        <a href="{% url 'prd-det' item.product.id %}">
+            <img src="{{ item.product.pimage.url }}" alt="" width="200" height="220">
+            <h3>{{ item.product.pname }}</h3>
+        </a>
+    {% endfor %}
+{% else %}
+    <h3 style="color: blue;">No items in whislist !!!</h3>
+{% endif %}
+
+{% endblock content %}

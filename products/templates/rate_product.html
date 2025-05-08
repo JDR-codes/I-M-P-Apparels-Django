@@ -1,0 +1,6 @@
+<h2>Rate {{ product.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit Rating">
+</form>

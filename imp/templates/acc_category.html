@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+<div class="catmain">
+    {% for cat in category %}
+        <div class="catsub">
+            <a href="{% url 'products' cat.acname %}">
+                <img src="{{ cat.acimage.url }}" alt="" width="200px" height="220px">
+                <h3>{{ cat.acname }}</h3>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

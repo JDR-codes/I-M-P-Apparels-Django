@@ -1,0 +1,10 @@
+<h2>Create UserProfile :</h2>
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% for field in form %}
+        <label for="">{{ field.label }}:</label>
+        {{ field }} <br><br>
+    {% endfor %}
+    <input type="submit" value="Create">
+</form>

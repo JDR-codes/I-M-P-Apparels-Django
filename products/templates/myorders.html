@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+
+<table border="1px solid black">
+    <tr>
+        <td>Order_id</td>
+        <td>Order_date</td>
+        <td>Total_price</td>
+    </tr>
+    {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.total_price }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

@@ -1,0 +1,28 @@
+
+{% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+        <p style="color:red;">{{ error }}</p>
+    {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+        <label for="">{{ field.label }}</label>
+        {{ field }} <br><br>
+
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <p style="color:red;">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+    {% endfor %}
+
+    <input type="submit" value="Signup">
+</form>
+<p>Already Have An Account ? <a href="{% url 'login' %}">Login</a></p>
+
+{% for message in messages %}
+    <p style="color: green;">{{ message }}</p>
+{% endfor %}

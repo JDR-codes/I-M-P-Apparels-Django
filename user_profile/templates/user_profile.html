@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+{% if user_profile %}
+    <img src="{{ user_profile.profile_picture.url }}" alt="" width="200" height="220">
+    <h2>{{ user_profile.user }}</h2>
+    <h2>{{ user_profile.user.email }}</h2>
+    <h2>{{ user_profile.phone }}</h2>
+    <h2>{{ user_profile.postal_code }}</h2>
+    <h2>{{ user_profile.city }}</h2>
+    <h2>{{ user_profile.state }}</h2>
+    <a href="{% url 'edit-profile' %}"><button>Edit</button></a>
+    <p><a href="{% url 'user-wishlist' %}">Wishlist</a></p>
+    <p><a href="{% url 'myorders' %}">MyOrders</a></p>
+    <p><a href="{% url 'saved-address' %}">Saved Address</a></p>
+{% else %}
+    <p style="color: blue;">{{ msg }}</p>
+    
+    <a href="{% url 'create-profile' %}"><button>Create</button></a>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+    <a href="{% url 'logout' %}"><button>Logout</button></a>
+{% endif %}
+
+{% endblock content %}

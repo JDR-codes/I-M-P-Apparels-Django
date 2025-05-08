@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+<img src="{{ prd_det.pimage.url }}" alt="" width="200px" height="220px">
+
+{% if wishlist %}
+    <a href="{% url 'wishlist' prd_det.id %}"><button>❤️‍🔥</button></a>
+{% else %}
+    <a href="{% url 'wishlist' prd_det.id %}"><button>❤️</button></a>
+{% endif %}
+<h2>{{ prd_det.pname }}</h2>
+<em><b>{{ prd_det.price }} /-</b></em>
+
+<h3>Sizes :</h3>
+
+{% for size in prd_sizes %}
+    {% if size %}
+        <span>{{ size.size }}</span>
+    {% endif %}
+{% endfor %} <br><br>
+
+<a href="{% url 'cart-form' prd_det.id %}"><button>🛒Add To Cart</button></a>
+
+<h2>Product Details :</h2>
+<pre><p>{{ prd_det.desc }}</p></pre>
+
+<h3>Customer Reviews:</h3>
+{% for rating in ratings %}
+    <p><strong>{{ rating.user.username }}</strong> rated it {{ rating.stars }}/5</p>
+    <p>{{ rating.review }}</p>
+    <hr>
+{% empty %}
+    <p>No reviews yet.</p>
+{% endfor %}
+
+<a href="{% url 'rate-product' prd_det.id %}">Rate Product</a>
+
+{% endblock content %}

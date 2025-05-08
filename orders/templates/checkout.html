@@ -1,0 +1,43 @@
+<h1>Checkout :</h1>
+
+<h3>Items:</h3>
+<ol>
+    {% for item in cart_items %}
+        <li>
+            <img src="{{ item.product.pimage.url }}" alt="" width="250" height="180">
+            <h3>{{ item.product.pname }}</h3>
+            <h5>{{ item.quantity }}</h5>
+            <h5>{{ item.size }}</h5>
+            <h5>{{ item.total }}</h5>
+        </li>
+    {% endfor %}
+</ol>
+
+<p><strong>Total Amount:</strong> ₹{{ amount }}</p>
+
+<h3>Select Delivery Address :</h3>
+{% for address in saved_addresses %}
+<label>
+    <input type="radio" name="selected_address_id" value="{{ address.id }}" required>
+    {{ address.address }}
+</label><br>
+{% empty %}
+    <p>No saved addresses. <a href="{% url 'add-address' %}">Add one now</a>.</p>
+{% endfor %} <br><br>
+
+<form id="razorpay-form" method="post" action="{% url 'payment-handler' %}">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"
+            data-key="{{ razorpay_merchant_key }}"
+            data-amount="{{ amount|floatformat:0 }}00"
+            data-currency="{{ currency }}"
+            data-order_id="{{ razorpay_order_id }}"
+            data-buttontext="Pay with Razorpay"
+            data-name="I M P Apparels"
+            data-description="Order Payment"
+            data-image="/your-logo.png"
+            data-prefill.name="{{ request.user.username }}"
+            data-prefill.email="{{ request.user.email }}"
+            data-theme.color="#F37254">
+    </script>
+    <input type="hidden" value="Hidden Element" name="hidden">
+</form>

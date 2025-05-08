@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+
+{% for item in cart %}
+    <a href="{% url 'prd-det' item.product.id %}">
+        <img src="{{ item.product.pimage.url }}" alt="" width="200px" height="220px">
+        <h3>{{ item.product.pname }}</h3>
+    </a>
+    <h4>{{ item.quantity }}</h4>
+    <h4>{{ item.size }}</h4>
+    <h4>{{ item.total }}</h4>
+    <a href="{% url 'remove-item' item.id %}"><button>Remove</button></a>
+{% endfor %}
+
+{% if msg %}
+<center>
+    <em><b>{{ msg }}</b></em>
+    <a href="{% url 'home' %}">Shop now</a>
+</center>
+{% else %}
+    <h2>Total Amount :</h2><em><b>{{ total_price }}</b></em>
+    <a href="{% url 'checkout' %}"><button>Place Order</button></a>
+{% endif %}
+
+{% endblock content %}

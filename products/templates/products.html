@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+{% if search_results %}
+    {% for product in search_results %}
+        <a href="{% url 'prd-det' product.id %}">
+            <img src="{{ product.pimage.url }}" alt="" width="200" height="220">
+            <h3>{{ product.pname }}</h3>
+        </a>
+    {% empty %}
+        <h5 style="color: red;">No Results Found !!!</h5>
+    {% endfor %}
+
+{% elif products %}
+    {% for prd in products %}
+        <a href="{% url 'prd-det' prd.id %}">
+            <img src="{{ prd.pimage.url }}" alt="" width="200px" height="220px">
+            <h2>{{ prd.pname }}</h2>
+            <p><em><b>{{ prd.price }} /-</b></em></p>
+        </a>
+    {% endfor %}
+    <form method="get" class="filter-form">
+        <!-- 💰 Price Filter -->
+        <h3>Filter :</h3>
+        <label>Min Price: <input type="number" name="min_price" value="{{ min_price }}"></label><br> <br>
+        <label>Max Price: <input type="number" name="max_price" value="{{ max_price }}"></label><br> <br>
+    
+        <!-- 🔃 Sort Options -->
+        <h3>Sort :</h3>
+        <label>Sort By:
+            <select name="sort_by">
+                <option value="">--Select--</option>
+                <option value="price" {% if sort_by == 'price' %}selected{% endif %}>Price: Low to High</option>
+                <option value="-price" {% if sort_by == '-price' %}selected{% endif %}>Price: High to Low</option>
+            </select>
+        </label>
+    
+        <button type="submit">Apply Filters</button>
+    </form>
+{% else %}
+    <h3 style="color: red;">No products available !!!</h3>
+{% endif %}
+
+
+
+
+{% endblock content %}

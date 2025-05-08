@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+<h3>Saved Addresses:</h3>
+
+{% if addresses %}
+
+    <ol>
+        {% for address in addresses %}
+            <li><p>{{ address.address }}</p>
+                <a href="{% url 'delete-address' address.id %}"><button>Delete</button></a>
+            </li>
+
+        {% endfor %}
+    </ol>
+    <a href="{% url 'add-address' %}"><button>Add Address</button></a>
+{% else %}
+    <p style="color: blueviolet;">No Saved address</p>
+    <a href="{% url 'add-address' %}"><button>Add Address</button></a>
+{% endif %}
+
+{% endblock content %}

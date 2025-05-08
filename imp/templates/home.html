@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %} I M P {% endblock title %}
+
+{% block content %}
+
+
+<center>
+    <img src="media\others\I M P.png" alt="Not loaded" width="50%" height="200px">
+</center>
+
+<h1>Trending :</h1>
+
+<div class="tdmain">
+    <marquee behavior="" direction="">
+        {% for prd in trending %}
+            <img src="{{ prd.pimage.url }}" alt="" width="200px" height="250px">
+        {% endfor %}
+    </marquee>
+</div>
+
+<h1>New Arrivals :</h1>
+<div class="new">
+    {% for prd in new %}
+        <a href="{% url 'prd-det' prd.id %}">
+            <img src="{{ prd.pimage.url }}" alt="" width="200px" height="220px">
+        </a>
+    {% endfor %}
+</div>
+
+<h1>Categories:</h1>
+
+<div class="catmain">
+    {% for cat in category %}
+        {% if cat.cname != 'Accessories' %}
+            <div class="catsub">
+                <a href="{% url 'products' cat.cname %}">
+                    <img src="{{ cat.cimage.url }}" alt="" width="200px" height="220px">
+                    <h3>{{ cat.cname }}</h3>
+                </a>
+            </div>
+        {% else %}
+            <div class="catsub">
+                <a href="{% url 'acc-category' %}">
+                    <img src="{{ cat.cimage.url }}" alt="" width="200px" height="220px">
+                    <h3>{{ cat.cname }}</h3>
+                </a>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock content %}
