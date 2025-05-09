@@ -20,7 +20,10 @@
     <input type="submit" value="Login">   
 </form>
 <p>Don't Have An Account ? <a href="{% url 'register' %}">Register</a></p>
+<p><a href="{% url 'password_reset' %}">Forgot password</a></p>
 
-{% for message in messages %}
-    <p style="color: green;">{{ message }}</p>
-{% endfor %}
+{% if messages %}
+    {% for message in messages %}
+        <p style="color: green;">{{ message }}</p>
+    {% endfor %}
+{% endif %}

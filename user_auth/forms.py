@@ -1,5 +1,5 @@
 
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
 from django import forms
 from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
@@ -33,3 +33,9 @@ class LoginUserForm(AuthenticationForm):
             elif not user.is_email_verified:
                 self.add_error(None, "Email is not verified.")
         return cleaned_data
+
+class CustomPasswordResetForm(forms.Form):
+    email = forms.EmailField()
+
+class CustomSetPasswordForm(SetPasswordForm):
+    pass
