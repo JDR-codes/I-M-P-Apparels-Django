@@ -1,7 +1,10 @@
 from django.shortcuts import redirect, render
 from . forms import UserProfileForm, UserAddressForm
+from django.contrib.auth import get_user_model
 from . models import UserProfile, SavedAddress
 from django.contrib.auth.decorators import login_required
+from cart.models import Coupon, UserCoupon
+User = get_user_model()
 # Create your views here.
 def create_profile_view(request):
     if request.method == 'POST':
@@ -34,8 +37,9 @@ def edit_profile_view(request):
 def user_profile_view(request):
     msg = None
     user_profile = None
+    user = User.objects.get(username = request.user)
     try:
-        user_profile = UserProfile.objects.get(user = request.user)
+        user_profile = UserProfile.objects.get(user = user)
     except:
         msg = "Profile hasn't created yet"
     return render (request,'user_profile.html',{'user_profile' : user_profile, 'msg' : msg})
@@ -60,3 +64,6 @@ def delete_address_view(request,id):
     address = SavedAddress.objects.get(id = id)
     address.delete()
     return redirect('saved-address')
+
+def coupon_list_view(request):
+    return render(request, 'coupons.html',{'coupons' : Coupon.objects.all()})

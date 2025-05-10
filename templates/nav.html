@@ -2,8 +2,8 @@
     <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
         <li><a href="{% url 'category' %}">Categories</a></li>
-        <li><a href="">About</a></li>
-        <li><a href="">Contact Us</a></li>
+        <li><a href="{% url 'about-us' %}">About</a></li>
+        <li><a href="{% url 'contact-us' %}">Contact Us</a></li>
     </ul>
     
     <form action="{% url 'search-query' %}">

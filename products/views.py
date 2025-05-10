@@ -4,6 +4,8 @@ from orders.models import *
 from django.db.models import Q
 from . forms import *
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
+User = get_user_model()
 # Create your views here.
 
 def products_view(request,cname):
@@ -36,12 +38,13 @@ def products_view(request,cname):
 def product_details_view(request,id):
     prd_det = Products.objects.get(id = id)
     prd_sizes = Size.objects.filter(pcode = id)
+    user = User.objects.get(username = request.user)
     try:
         ratings = Rating.objects.filter(product = id)
     except:
         ratings = None
     try:
-        product = WishList.objects.get(product = id)
+        product = WishList.objects.get(user = user, product = id)
     except:
         product = None
     context = {
@@ -65,7 +68,8 @@ def wishlist_view(request,id):
     return redirect('prd-det',id)
 
 def user_wishlist_view(request):
-    products = WishList.objects.filter(user = request.user)
+    user = User.objects.get(username = request.user)
+    products = WishList.objects.filter(user = user)
     return render(request,'wishlist.html',{'products':products})
 
 def myorders_view(request):

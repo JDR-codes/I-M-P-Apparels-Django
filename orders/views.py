@@ -1,6 +1,6 @@
 import razorpay
 from django.shortcuts import redirect, render
-from cart.models import CartItems
+from cart.models import CartItems, Cart
 from . models import *
 from products.models import Size
 from django.conf import settings
@@ -10,13 +10,15 @@ from user_profile.models import SavedAddress
 # Create your views here.
 
 def checkout_view(request):
-    cart_items = CartItems.objects.filter(cart_user = request.user)
+    if request.method == 'POST':
+        final_price = int(float(request.POST.get('final_price')))
+    user = Cart.objects.get(user = request.user)
+    cart_items = CartItems.objects.filter(cart = user)
     addresses = SavedAddress.objects.filter(user = request.user)
 
-    total = sum(item.total for item in cart_items)
     order = Order.objects.create(
         user = request.user,
-        total_price = total
+        total_price = final_price
     )
 
     for item in cart_items:
@@ -30,7 +32,7 @@ def checkout_view(request):
     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID,settings.RAZORPAY_KEY_SECRET))
 
     razorpay_order = client.order.create({
-        'amount' : int(total * 100),
+        'amount' : int(final_price * 100),
         'currency' : 'INR',
     })
     order.razorpay_id = razorpay_order['id']
@@ -43,7 +45,7 @@ def checkout_view(request):
         'order': order,
         'razorpay_order_id': razorpay_order['id'],
         'razorpay_merchant_key': settings.RAZORPAY_KEY_ID,
-        'amount': total,
+        'amount': final_price,
         'currency': 'INR',
         'callback_url': '/paymenthandler/'
     }
@@ -78,7 +80,7 @@ def payment_handler_view(request):
                     size.stock -= item.quantity
                     size.save()
 
-                CartItems.objects.filter(cart_user = order.user).delete()
+                CartItems.objects.filter(cart = order.user).delete()
                 return render(request, 'payment_status.html', {'status': 'success'})
             else:
                 return render(request, 'payment_status.html', {'status': 'failed'})

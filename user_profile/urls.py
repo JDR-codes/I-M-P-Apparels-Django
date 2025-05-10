@@ -7,5 +7,6 @@ urlpatterns = [
     path('edit-profile',views.edit_profile_view,name='edit-profile'),
     path('add-address',views.add_address_view,name='add-address'),
     path('saved-address',views.saved_address_view,name='saved-address'),
-    path('delete-address/<int:id>',views.delete_address_view,name='delete-address')
+    path('delete-address/<int:id>',views.delete_address_view,name='delete-address'),
+    path('coupon-list',views.coupon_list_view,name='coupon-list')
 ]

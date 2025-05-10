@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %} {% endblock title %}
+
+{% block content %}
+
+<table border="1px solid black">
+    <tr>
+        <td>Coupon</td>
+        <td>Discount Percent</td>
+        <td>Validity</td>
+    </tr>
+    {% for coupon in coupons %}
+        <tr>
+            <td>{{ coupon.code }}</td>
+            <td>{{ coupon.discount }} %</td>
+            <td>{{ coupon.valid_to }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock content %}

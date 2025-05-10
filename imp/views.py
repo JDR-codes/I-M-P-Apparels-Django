@@ -14,3 +14,9 @@ def categories_view(request):
 
 def acc_categories_view(request):
     return render(request,'acc_category.html',{'category' : AccessoriesCat.objects.all()})
+
+def contact_us_view(request):
+    return render(request,'contactus.html')
+
+def about_us_view(request):
+    return render(request,'aboutus.html')

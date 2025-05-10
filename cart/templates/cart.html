@@ -5,25 +5,63 @@
 {% block content %}
 
 
-{% for item in cart %}
-    <a href="{% url 'prd-det' item.product.id %}">
-        <img src="{{ item.product.pimage.url }}" alt="" width="200px" height="220px">
-        <h3>{{ item.product.pname }}</h3>
-    </a>
-    <h4>{{ item.quantity }}</h4>
-    <h4>{{ item.size }}</h4>
-    <h4>{{ item.total }}</h4>
-    <a href="{% url 'remove-item' item.id %}"><button>Remove</button></a>
-{% endfor %}
+{% if cartitems %}
+    {% for item in cartitems %}
+        <a href="{% url 'prd-det' item.product.id %}">
+            <img src="{{ item.product.pimage.url }}" alt="" width="200px" height="220px">
+            <h3>{{ item.product.pname }}</h3>
+        </a>
+        <h4>Qty: {{ item.quantity }}</h4>
+        <h4>Size: {{ item.size }}</h4>
+        <h4>Total: ₹{{ item.total }}</h4>
+        <a href="{% url 'remove-item' item.id %}"><button>Remove</button></a>
+    {% endfor %}
 
-{% if msg %}
-<center>
-    <em><b>{{ msg }}</b></em>
-    <a href="{% url 'home' %}">Shop now</a>
-</center>
+    <!-- Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'error' in message.tags %}
+                <p style="color: red;"><b>{{ message }}</b></p>
+            {% else %}
+                <p style="color: green;"><b>{{ message }}</b></p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <!-- Coupon Form -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.code.label_tag }} {{ form.code }}
+        {% for error in form.code.errors %}
+            <div style="color: red;">{{ error }}</div>
+        {% endfor %}
+        <button type="submit">Apply Coupon</button>
+
+        {% if applied_code %}
+            <button type="submit" name="remove_coupon">Remove Coupon</button>
+        {% endif %}
+    </form>
+
+    <!-- Price Summary -->
+    <h3>Total Amount: ₹{{ total_price }}</h3>
+    {% if discount > 0 %}
+        <h4>Discount: ₹{{ discount }}</h4>
+        <h2><strong>Final Amount: ₹{{ final_price }}</strong></h2>
+    {% else %}
+        <h2><strong>Final Amount: ₹{{ total_price }}</strong></h2>
+    {% endif %}
+
+    <form action="{% url 'checkout' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="final_price" value="{{ final_price }}">
+        <button type="submit">Place Order</button>
+    </form>
+
 {% else %}
-    <h2>Total Amount :</h2><em><b>{{ total_price }}</b></em>
-    <a href="{% url 'checkout' %}"><button>Place Order</button></a>
+    <center>
+        <em><b>{{ msg }}</b></em><br>
+        <a href="{% url 'home' %}">Shop now</a>
+    </center>
 {% endif %}
 
 {% endblock content %}
