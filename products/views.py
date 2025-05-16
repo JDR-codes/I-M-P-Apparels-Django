@@ -38,23 +38,34 @@ def products_view(request,cname):
 def product_details_view(request,id):
     prd_det = Products.objects.get(id = id)
     prd_sizes = Size.objects.filter(pcode = id)
-    user = User.objects.get(username = request.user)
-    try:
-        ratings = Rating.objects.filter(product = id)
-    except:
-        ratings = None
-    try:
-        product = WishList.objects.get(user = user, product = id)
-    except:
-        product = None
+    ratings = Rating.objects.filter(product=id)
+
+    product = None  
+    if request.user.is_authenticated:
+        try:
+            product = WishList.objects.get(user=request.user, product=id)
+        except WishList.DoesNotExist:
+            product = None
+    # Recently viewed 
+    recently_viewed = request.session.get('recently_viewed',[])
+
+    if id in recently_viewed:
+        recently_viewed.remove(id)
+
+    recently_viewed.insert(0,id)
+    recently_viewed = recently_viewed[:5]
+    request.session['recently_viewed'] = recently_viewed
+
+    recent_products = Products.objects.filter(id__in = recently_viewed).exclude(id = id)
     context = {
         'prd_det' : prd_det,
         'prd_sizes' : prd_sizes,
         'wishlist' :product,
-        'ratings' : ratings
+        'ratings' : ratings,
+        'recent_products' : recent_products,
     }
     return render(request,'prd_details.html',context)
-
+@login_required(login_url='login')
 def wishlist_view(request,id):
     try:
         wish_product = WishList.objects.get(product = id, user = request.user)
@@ -89,7 +100,7 @@ def search_query_view(request):
         return redirect('home')
     return render(request,'products.html',{'search_results' : products if query else None})
 
-@login_required
+@login_required(login_url='login')
 def rate_product_view(request, product_id):
     product = get_object_or_404(Products, id=product_id)
     try:

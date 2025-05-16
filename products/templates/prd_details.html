@@ -38,4 +38,18 @@
 
 <a href="{% url 'rate-product' prd_det.id %}">Rate Product</a>
 
+<h1>Recently viewed products :</h1>
+<div class="recent">
+    {% if recent_products %}
+        {% for prd in recent_products %}
+            <a href="{% url 'prd-det' prd.id %}">
+                <img src="{{ prd.pimage.url }}" alt="" width="200px" height="220px">
+            </a>
+        {% endfor %}
+    {% else %}
+            <p style="color: palevioletred;">No recently viewed products.</p>
+    {% endif %}
+</div>
+
+
 {% endblock content %}
